@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseManagement.Server", "Server\WarehouseManagement.Server.csproj", "{CEF6CC64-3944-4FB2-A536-68494539501C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseManagement.Client", "Client\WarehouseManagement.Client.csproj", "{599CE42E-5B99-401A-9F4A-2523169742F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseManagement.Shared", "Shared\WarehouseManagement.Shared.csproj", "{01805486-B879-4418-9A1C-7404C0980EFE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CEF6CC64-3944-4FB2-A536-68494539501C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEF6CC64-3944-4FB2-A536-68494539501C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEF6CC64-3944-4FB2-A536-68494539501C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEF6CC64-3944-4FB2-A536-68494539501C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{599CE42E-5B99-401A-9F4A-2523169742F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{599CE42E-5B99-401A-9F4A-2523169742F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{599CE42E-5B99-401A-9F4A-2523169742F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{599CE42E-5B99-401A-9F4A-2523169742F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01805486-B879-4418-9A1C-7404C0980EFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01805486-B879-4418-9A1C-7404C0980EFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01805486-B879-4418-9A1C-7404C0980EFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01805486-B879-4418-9A1C-7404C0980EFE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
