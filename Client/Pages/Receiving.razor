@@ -1,6 +1,308 @@
 @page "/Receiving"
+@page "/"
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content  bg-dark">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Order Details</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <div class="modal-body text-white">
+            @* order details for _order *@
+            <div class="row">
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-6">
+                            <p>Order Id</p>
+                        </div>
+                        <div class="col-6">
+                            <p>@_order.Id</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <p>Order Name</p>
+                        </div>
+                        <div class="col-6">
+                            <p>@_order.Name</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <p>Vendor Name</p>
+                        </div>
+                        <div class="col-6">
+                            <p>@_order.VendorName</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <p>Total Amount</p>
+                        </div>
+                        <div class="col-6">
+                            <p>@_order.TotalAmount</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <p>Status</p>
+                        </div>
+                        <div class="col-6">
+                            <p>@_order.Status</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <table class="table table-dark table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Code</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Price</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var item in _order.OrderItemsList)
+                        {
+                            <tr>
+                                <th scope="row">@item.Id</th>
+                                <td>@item.Name</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.Price</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                    <div class="form-floating  bg-dark">
+                      <select class="form-select  bg-dark text-white" id="floatingSelect" aria-label="Floating label select example">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                      </select>
+                      <label for="floatingSelect">Works with selects</label>
+                    </div>
+                </div>
+                </div>
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Reject</button>
+        <button type="button" class="btn btn-primary">Receive</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <h3>Receiving</h3>
 
-@code {
+
+<div class="input-group mb-3">
+    <span class="input-group-text">Barcode code</span>
+    <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+    <span class="input-group-text">.00</span>
+    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+</div>
+
+<div class="row">
+    <div class="col-6">
+        
+<table class="table table-dark table-hover">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Code</th>
+      <th scope="col">vendor name</th>
+      <th scope="col">items list</th>
+      <th scope="col">total amount</th>
+      <th scope="col">status</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (var item in items)
+    {
+        <tr data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <th scope="row">@item.Id</th>
+            <td>@item.Name</td>
+            <td>@item.VendorName</td>
+            <td>
+                @foreach(var i in item.OrderItemsList)
+                {
+                    <p>@i.ToString()</p>
+                }
+            </td>
+            <td>@item.TotalAmount</td>
+            <td>@item.Status</td>
+        </tr>
+    }
+
+  </tbody>
+</table>
+
+    </div>
     
+    <div class="col-6">
+        
+<table class="table table-dark table-hover">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Code</th>
+      <th scope="col">vendor name</th>
+      <th scope="col">items list</th>
+      <th scope="col">total amount</th>
+      <th scope="col">status</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (var item in items)
+    {
+        <tr data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <th scope="row">@item.Id</th>
+            <td>@item.Name</td>
+            <td>@item.VendorName</td>
+            <td>
+                @foreach(var i in item.OrderItemsList)
+                {
+                    <p>@i.ToString()</p>
+                }
+            </td>
+            <td>@item.TotalAmount</td>
+            <td>@item.Status</td>
+        </tr>
+    }
+
+  </tbody>
+</table>
+
+    </div>
+</div>
+
+<h3>Received</h3>
+@* a full width list of received items *@
+<table class="table table-dark table-hover">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Code</th>
+      <th scope="col">vendor name</th>
+      <th scope="col">items list</th>
+      <th scope="col">total amount</th>
+      <th scope="col">status</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (var item in items)
+    {
+        <tr data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <th scope="row">@item.Id</th>
+            <td>@item.Name</td>
+            <td>@item.VendorName</td>
+            <td>
+                @foreach(var i in item.OrderItemsList)
+                {
+                    <p>@i.ToString()</p>
+                }
+            </td>
+            <td>@item.TotalAmount</td>
+            <td>@item.Status</td>
+        </tr>
+    }
+
+  </tbody>
+</table>
+<h3>Stocking</h3>
+        <table class="table table-dark table-hover">
+            <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Product Quantity</th>
+                <th>Product Barcode</th>
+                <th>Product Location</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var product in _products)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.Quantity</td>
+                    <td>@product.Barcode</td>
+                    <td>@product.Location</td>
+                </tr>
+            }
+        
+            </tbody>
+        </table>
+@code {
+    List<Order> items = new List<Order>()
+    {   
+        new Order()
+        {
+            Id = 1,
+            Name = "Order 1",
+            VendorName = "Vendor 1",
+            OrderItemsList = new List<OrderItem>()
+            {
+                new OrderItem()
+                {
+                    Id = 1,
+                    Name = "Item 1",
+                    Quantity = 1,
+                    Price = 100
+                },
+                new OrderItem()
+                {
+                    Id = 2,
+                    Name = "Item 2",
+                    Quantity = 2,
+                    Price = 200
+                }
+            },
+            Status = Status.Pending
+        },
+        new Order()
+        {
+            Id = 2,
+            Name = "Order 2",
+            VendorName = "Vendor 2",
+            OrderItemsList = new List<OrderItem>()
+            {
+                new OrderItem()
+                {
+                    Id = 3,
+                    Name = "Item 3",
+                    Quantity = 3,
+                    Price = 300
+                },
+                new OrderItem()
+                {
+                    Id = 4,
+                    Name = "Item 4",
+                    Quantity = 4,
+                    Price = 400
+                }
+            },
+            Status = Status.Pending
+        }
+    };
+    Order _order = new Order();
+    protected override void OnInitialized()
+    {
+        _order = items.FirstOrDefault();
+    }
+    List<Product> _products = new List<Product>()
+    {
+        new Product(){Name="Product 1", Quantity=10, UnitPrice= 10, Barcode = "1234567890", Location = "A1"},
+        new Product(){Name="Product 2", Quantity=19, UnitPrice= 9, Barcode = "1874681422", Location = "A1"},
+        new Product(){Name="Product 3", Quantity=91, UnitPrice= 89, Barcode = "1846986384", Location = "A7"},
+        new Product(){Name="Product 4", Quantity=10, UnitPrice= 10, Barcode = "1234567890", Location = "A1"},
+        new Product(){Name="Product 5", Quantity=19, UnitPrice= 9, Barcode = "1874681422", Location = "A1"},
+        new Product(){Name="Product 6", Quantity=91, UnitPrice= 89, Barcode = "1846986384", Location = "A7"},
+        
+    };
 }

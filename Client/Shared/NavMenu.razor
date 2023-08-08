@@ -11,17 +11,27 @@
     <nav class="flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+                <span class="oi oi-home" aria-hidden="true"></span> Receiving
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            <NavLink class="nav-link" href="/orders" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Orders
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            <NavLink class="nav-link" href="shipping">
+                <span class="oi oi-plus" aria-hidden="true"></span> Shipping
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="orderfulfillment">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Order Fulfillment
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="stocking">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Stocking
             </NavLink>
         </div>
     </nav>
@@ -36,4 +46,5 @@
     {
         collapseNavMenu = !collapseNavMenu;
     }
+
 }

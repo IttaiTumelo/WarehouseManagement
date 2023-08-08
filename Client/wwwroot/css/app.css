@@ -1,13 +1,16 @@
-@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
-
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: #1a1e21;
+    font-family: 'Lato', sans-serif;
 }
 
 h1:focus {
     outline: none;
 }
-
+h1, h2, h3, h4, h5, h6,p {
+    /*font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
+    color: white;
+}
 a, .btn-link {
     color: #0071c1;
 }
@@ -15,7 +18,7 @@ a, .btn-link {
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
-    border-color: #1861ac;
+    border-color: #111a23;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {

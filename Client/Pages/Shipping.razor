@@ -1,6 +1,174 @@
-@page "/Shipping"
+@page "/shipping"
 <h3>Shipping</h3>
 
+
+@* order number, customer name, items list, total amount, status, and shipper. *@
+                        <button class="btn btn-primary">Create Shipment</button>
+
+<table class="table table-dark table-hover">
+  <thead>
+  <tr>
+    <th>Order Number</th>
+    <th>Customer Name</th>
+    <th>Items List</th>
+    <th>Shipper</th>
+    <th>Status</th>
+    <th>Actions</th>
+
+  </tr>
+  </thead>
+  <tbody>
+    @foreach (var item in items)
+    {
+        <tr>
+            <td>@item.OrderNumber</td>
+            <td>@item.CustomerName</td>
+            <td>
+                <table class="table table-dark table-hover">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var shipmentItem in item.ShipmentItemsList)
+                    {
+                        <tr>
+                            <td>@shipmentItem.Name</td>
+                            <td>@shipmentItem.Quantity</td>
+                            <td>@shipmentItem.Price</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </td>
+            <td>@item.Shipper</td>
+            <td>@item.Status</td>
+            <td>
+                <div>
+                        <button class="btn btn-primary">Add Item</button>
+                    <button class="btn btn-primary">Pack and Seal</button>
+                    <br/>
+                        <button class="btn btn-primary">View Shipping Lable and Details</button>
+                    <br/>
+                        <button class="btn btn-primary">Ship</button>
+                        <button class="btn btn-primary">Ship</button>
+                </div>
+            </td>
+        </tr>
+    }
+
+  </tbody>
+</table>
 @code {
-    
+    List<Shipment> items = new List<Shipment>()
+    {
+        new Shipment()
+        {
+            Id = 1, 
+            Shipper = Shipper.DHL, 
+            Status = Status.Pending, 
+            OrderNumber = "Order 1", 
+            Name = "Order 1", 
+            CustomerName =  "Customer 1",
+            ShipmentItemsList = new()
+            {   
+                new ShipmentItem()
+                {
+                    Id = 1,
+                    Name = "Item 1",
+                    Quantity = 1,
+                    Price = 10
+                },
+                new ShipmentItem()
+                {
+                    Id = 2,
+                    Name = "Item 2",
+                    Quantity = 2,
+                    Price = 20
+                },
+            }
+        },
+        new Shipment()
+        {
+            Id = 2, 
+            Shipper = Shipper.DHL, 
+            Status = Status.Pending, 
+            OrderNumber = "Order 2", 
+            Name = "Order 2", 
+            CustomerName =  "Customer 2",
+            ShipmentItemsList = new()
+            {   
+                new ShipmentItem()
+                {
+                    Id = 1,
+                    Name = "Item 1",
+                    Quantity = 1,
+                    Price = 10
+                },
+                new ShipmentItem()
+                {
+                    Id = 2,
+                    Name = "Item 2",
+                    Quantity = 2,
+                    Price = 20
+                },
+            }
+        },
+        new Shipment()
+        {
+            Id = 3, 
+            Shipper = Shipper.DHL, 
+            Status = Status.Pending, 
+            OrderNumber = "Order 3", 
+            Name = "Order 3", 
+            CustomerName =  "Customer 3",
+            ShipmentItemsList = new()
+            {   
+                new ShipmentItem()
+                {
+                    Id = 1,
+                    Name = "Item 1",
+                    Quantity = 1,
+                    Price = 10
+                },
+                new ShipmentItem()
+                {
+                    Id = 2,
+                    Name = "Item 2",
+                    Quantity = 2,
+                    Price = 20
+                },
+            }
+        },
+        new Shipment()
+        {
+            Id = 4, 
+            Shipper = Shipper.DHL, 
+            Status = Status.Pending, 
+            OrderNumber = "Order 4", 
+            Name = "Order 4", 
+            CustomerName =  "Customer 4",
+            ShipmentItemsList = new()
+            {   
+                new ShipmentItem()
+                {
+                    Id = 1,
+                    Name = "Item 1",
+                    Quantity = 1,
+                    Price = 10
+                },
+                new ShipmentItem()
+                {
+                    Id = 2,
+                    Name = "Item 2",
+                    Quantity = 2,
+                    Price = 20
+                },
+            }
+        },
+    };
+
 }

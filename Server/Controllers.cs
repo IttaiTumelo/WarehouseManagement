@@ -2,11 +2,11 @@ namespace WarehouseManagement.Server.Pages;
 
 [ApiController]
 [Route("api/[controller]")]
-public class BaseController<T> : ControllerBase where T : BaseEntity, new()
+public class Controllers<T> : ControllerBase where T : BaseEntity, new()
 {
     protected readonly DataContext _context;
     private readonly T _entity;
-    public BaseController(DataContext context)
+    public Controllers(DataContext context)
     {
         _context = context;
         _entity = new BaseEntity() as T;
@@ -64,16 +64,52 @@ public class BaseController<T> : ControllerBase where T : BaseEntity, new()
     }
 }
 
-public class ProductController : BaseController<Product>
+public class ProductController : Controllers<Product>
 {
     public ProductController(DataContext context) : base(context)
     {
     }
 }
 
-public class CategoryController : BaseController<Category>
+public class OrderItemController : Controllers<OrderItem>
 {
-    public CategoryController(DataContext context) : base(context)
+    public OrderItemController(DataContext context) : base(context)
+    {
+    }
+}
+
+
+public class OrderController : Controllers<OrderItem>
+{
+    public OrderController(DataContext context) : base(context)
+    {
+    }
+}
+
+public class ShipmentController : Controllers<OrderItem>
+{
+    public ShipmentController(DataContext context) : base(context)
+    {
+    }
+}
+
+public class ShipperController : Controllers<OrderItem>
+{
+    public ShipperController(DataContext context) : base(context)
+    {
+    }
+}
+
+public class ShipmentItemController : Controllers<OrderItem>
+{
+    public ShipmentItemController(DataContext context) : base(context)
+    {
+    }
+}
+
+public class UserController : Controllers<User>
+{
+    public UserController(DataContext context) : base(context)
     {
     }
 }

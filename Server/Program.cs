@@ -1,4 +1,10 @@
-using Microsoft.AspNetCore.ResponseCompression;
+global using Microsoft.AspNetCore.ResponseCompression;
+global using Microsoft.EntityFrameworkCore;
+global using System.Text.Json.Serialization;
+global using WarehouseManagement.Server;
+global using Microsoft.AspNetCore.Mvc;
+global using WarehouseManagement.Shared;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,12 +12,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddDbContextPool<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    
+    app.UseSwagger();
+    app.UseSwaggerUI();
     app.UseWebAssemblyDebugging();
 }
 else
