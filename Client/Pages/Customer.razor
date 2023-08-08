@@ -1,0 +1,132 @@
+@page "/Customer"
+<h3>Customer</h3>
+  <main class="text-light">
+    <div class="py-5 text-center">
+      <h2>Make Order</h2>
+    </div>
+
+    <div class="row g-5">
+      <div class="col-md-5 col-lg-4 order-md-last">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-primary">Your cart</span>
+          <span class="badge bg-primary rounded-pill">3</span>
+        </h4>
+        <ul class="list-group mb-3">
+          @foreach (var product in customerOrder.Products)
+          {
+            <li class="list-group-item d-flex justify-content-between lh-sm bg-dark text-light">
+              <div>
+                <h6 class="my-0">@product.Name</h6>
+                <small class="text-body-secondary"> Price : @product.UnitPrice</small>
+                <small class="text-body-secondary"> Quantity : @product.Quantity</small>
+              </div>
+              <span class="text-body-secondary">K @product.TotalPrice</span>
+            </li>
+          }
+
+
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Total (USD)</span>
+            <strong>K @customerOrder.TotalAmount</strong>
+          </li>
+        </ul>
+          <button class="w-100 btn btn-primary btn-lg" @onclick="AddOrder">Make Order</button>
+
+      </div>
+      <div class="col-md-7 col-lg-8">
+        <h4 class="mb-3">Order details</h4>
+        <div class="needs-validation" novalidate>
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label @bind="customerOrder.Name" for="firstName" class="form-label">Full name</label>
+              <input type="text" @bind="customerOrder.Name" class="form-control" id="firstName" placeholder=""  required>
+              <div class="invalid-feedback">
+                Valid first name is required.
+              </div>
+            </div>
+
+          </div>
+          <div>
+            <div class="text-white">
+              <div class="row">
+                <select @bind="Id" class="form-select col" aria-label="Default select example">
+                  <option disabled selected>Item</option>
+                  @foreach(var product in LocalDb.AvailableProducts)
+                  {
+                    <option @onclick="()=>SetProduct(product)" value="@product.Id">@product.Name</option>
+                  }
+                </select>
+                <div class="col">
+                  <input type="number" @bind="selectedProduct.UnitPrice" class="form-control bg-dark text-white" placeholder="Unit Price" disabled>
+                </div>
+                <div class="col">
+                  <input type="number" @bind="Unites" class="form-control bg-dark text-white" placeholder="Unites">
+                </div>
+                <div class="col">
+                  <button class="btn btn-success p-1" @onclick="AddToProductList">Add to List</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+@code {
+  CustomerOrder customerOrder = new CustomerOrder();
+
+  int Id = 1;
+  int Unites = 0;
+
+  Product selectedProduct { get => LocalDb.AvailableProducts.FirstOrDefault(x => x.Id == Id); set { } }
+  
+  
+  
+  List<OrderItem> orders = new List<OrderItem>();
+  List<Order> dborders = new List<Order>();
+  OrderItem order = new OrderItem();
+  Order dborde = new Order();
+  
+   void SetProduct(Product product)
+  {
+    selectedProduct = product;
+    Console.WriteLine(selectedProduct.Name);
+    StateHasChanged();
+  }
+
+  void AddToProductList()
+  {
+    customerOrder.Products.Add(
+      new ()
+      {
+        Id = selectedProduct.Id,
+        Name = selectedProduct.Name,
+        Quantity = Unites,
+        UnitPrice = selectedProduct.UnitPrice,
+      }); 
+    selectedProduct = new Product();
+    
+    StateHasChanged();
+    
+  }
+  
+  void AddOrder()
+  {
+    LocalDb.CurrentCustomerOrder.Add(customerOrder);
+    customerOrder = new CustomerOrder();
+    StateHasChanged();
+}
+
+
+
+protected override void OnInitialized()
+  {
+    
+    
+}
+
+
+
+}

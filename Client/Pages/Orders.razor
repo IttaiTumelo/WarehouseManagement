@@ -39,58 +39,97 @@
   }
     
 </div>
-<div>
-    <div class="text-white">
-      <div class="row">
-        <div class="col-7">
-          <input type="text" @bind="order.Name" class="form-control bg-dark text-white" placeholder="Item Name">
-        </div>
-        <div class="col">
-          <input type="number" @bind="order.Price" class="form-control bg-dark text-white" placeholder="Unit Price">
-        </div>
-        <div class="col">
-          <input type="number" @bind="order.Quantity" class="form-control bg-dark text-white" placeholder="Unites">
-        </div>
-        <div class="col">
-          <button class="btn btn-success p-1" @onclick="() => { orders.Add(order); order = new(); StateHasChanged();}">Add to List</button>
-        </div>
-      </div>
-    </div>
+<div class="row">
+  <div class="col">
+              <div>
+                <div class="text-white">
+                  <div class="row">
+                    <select @bind="Id" class="form-select col" aria-label="Default select example">
+                      <option disabled selected>Item</option>
+                      @foreach(var product in LocalDb.AvailableProducts)
+                      {
+                        <option @onclick="()=>SetProduct(product)" value="@product.Id">@product.Name</option>
+                      }
+                    </select>
+                    <div class="col">
+                      <input type="number" @bind="selectedProduct.UnitPrice" class="form-control bg-dark text-white" placeholder="Unit Price" disabled>
+                    </div>
+                    <div class="col">
+                      <input type="number" @bind="Unites" class="form-control bg-dark text-white" placeholder="Unites">
+                    </div>
+                    <div class="col">
+                      <button class="btn btn-success p-1" @onclick="AddToProductList">Add to List</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+  </div>
+  
+  <div class="col">
+          <div class="col-md-5 col-lg-4 order-md-last">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+              <span class="text-primary">Your cart</span>
+              <span class="badge bg-primary rounded-pill">3</span>
+            </h4>
+            <ul class="list-group mb-3">
+              @foreach (var product in ourOrder.Products)
+              {
+                <li class="list-group-item d-flex justify-content-between lh-sm bg-dark text-light">
+                  <div>
+                    <h6 class="my-0">@product.Name</h6>
+                    <small class="text-body-secondary"> Price : @product.UnitPrice</small>
+                    <small class="text-body-secondary"> Quantity : @product.Quantity</small>
+                  </div>
+                  <span class="text-body-secondary">K @product.TotalPrice</span>
+                </li>
+              }
+    
+    
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Total (USD)</span>
+                <strong>K @ourOrder.TotalAmount</strong>
+              </li>
+            </ul>
+              <button class="w-100 btn btn-primary btn-lg" @onclick="AddOrder">Make Order</button>
+    
+          </div>
+
+  </div>
 </div>
 
+
+
+
+
+
 <h4>Our Orders</h4>
-
-<table class="table table-dark table-hover">
-  <thead>
+@foreach (var order in LocalDb.OurOrders)
+{
+  
+  <table class="table table-dark table-hover">
+    <thead>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">Code</th>
-      <th scope="col">vendor name</th>
-      <th scope="col">items list</th>
-      <th scope="col">total amount</th>
-      <th scope="col">status</th>
+      <th>Product Name</th>
+      <th>Product Quantity</th>
+      <th>Product Barcode</th>
+      <th>Product Location</th>
     </tr>
-  </thead>
-  <tbody>
-    @foreach (var item in dborders)
+    </thead>
+    <tbody>
+    @foreach (var product in ourOrder.Products)
     {
-        <tr data-bs-toggle="modal" data-bs-target="#exampleModal">
-            <th scope="row">@item.Id</th>
-            <td>@item.Name</td>
-            <td>@item.VendorName</td>
-            <td>
-                @foreach(var i in item.OrderItemsList)
-                {
-                    <p>@i.ToString()</p>
-                }
-            </td>
-            <td>@item.TotalAmount</td>
-            <td>@item.Status</td>
-        </tr>
+      <tr>
+        <td>@product.Name</td>
+        <td>@product.Quantity</td>
+        <td>@product.Barcode</td>
+        <td>@product.Location</td>
+      </tr>
     }
+        
+    </tbody>
+  </table>
+}
 
-  </tbody>
-</table>
 @code {
   List<OrderItem> orders = new List<OrderItem>();
   List<Order> dborders = new List<Order>();
@@ -119,8 +158,56 @@
 
   protected override async void OnInitialized()
   {
-      dborders = (await OrderService.Get()).Where(x=>x.Direction == Direction.In).ToList();
+      // dborders = (await OrderService.Get()).Where(x=>x.Direction == Direction.In).ToList();
     StateHasChanged();
   }
+
+}
+
+
+@code {
+  OurOrder ourOrder = new();
+
+  int Id = 1;
+  int Unites = 0;
+
+  Product selectedProduct { get => LocalDb.AvailableProducts.FirstOrDefault(x => x.Id == Id); set { } }
+  
+  
+  
+  Order dborde = new Order();
+  
+  void SetProduct(Product product)
+  {
+    selectedProduct = product;
+    Console.WriteLine(selectedProduct.Name);
+    StateHasChanged();
+  }
+
+  void AddToProductList()
+  {
+    ourOrder.Products.Add(
+      new ()
+      {
+        Id = selectedProduct.Id,
+        Name = selectedProduct.Name,
+        Quantity = Unites,
+        UnitPrice = selectedProduct.UnitPrice,
+      }); 
+    selectedProduct = new Product();
+    
+    StateHasChanged();
+    
+  }
+  
+  void AddOrder()
+  {
+    LocalDb.OurOrders.Add(ourOrder);
+    ourOrder = new ();
+    StateHasChanged();
+  }
+
+
+
 
 }

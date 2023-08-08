@@ -1,0 +1,24 @@
+@page "/Login"
+@page "/"
+<style>
+    ._hide{
+        display: none;
+    }
+</style>
+    @* create a login form here *@
+<form>
+    <input type="text" @bind="_username" placeholder="username"/>
+    <input type="password" @bind="_password" required placeholder="password"/>
+<a type="button" class="btn btn-success" @onclick="Login" href="Receiving">Login</a>
+<a type="button" class="btn btn-success" @onclick="Login" href="customer">Login</a>
+</form>
+
+@code {
+    private string _username;
+    private string _password;
+
+    private void Login()
+    {
+        // do something with the username and password
+    }
+}
