@@ -1,6 +1,25 @@
 @page "/Orders"
 @inject IOrderService OrderService
 @inject OrderItemService OrderItemService
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content  bg-dark text-light">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Success</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        You Order has been made.😌
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+        @* <button type="button" class="btn btn-primary">Understood</button> *@
+      </div>
+    </div>
+  </div>
+</div>
+
 <h3>Orders</h3>
 <h4>Create Order</h4>
 <div class="text-white">
@@ -69,7 +88,7 @@
           <div class="col-md-5 col-lg-4 order-md-last">
             <h4 class="d-flex justify-content-between align-items-center mb-3">
               <span class="text-primary">Your cart</span>
-              <span class="badge bg-primary rounded-pill">3</span>
+              <span class="badge bg-primary rounded-pill">@ourOrder.Products.Count</span>
             </h4>
             <ul class="list-group mb-3">
               @foreach (var product in ourOrder.Products)
@@ -86,11 +105,11 @@
     
     
               <li class="list-group-item d-flex justify-content-between">
-                <span>Total (USD)</span>
+                <span>Total (ZMW)</span>
                 <strong>K @ourOrder.TotalAmount</strong>
               </li>
             </ul>
-              <button class="w-100 btn btn-primary btn-lg" @onclick="AddOrder">Make Order</button>
+              <button class="w-100 btn btn-primary btn-lg" @onclick="AddOrder" data-bs-toggle="modal" data-bs-target="#staticBackdrop" >Make Order</button>
     
           </div>
 
@@ -139,7 +158,6 @@
     {
       Order order = new()
       {
-        Direction = Direction.In,
         Name = "00000",
         OrderDate = DateTime.Now,
         OrderItemsList = orders,

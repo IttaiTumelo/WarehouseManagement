@@ -1,4 +1,26 @@
 @page "/Customer"
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content  bg-dark text-light">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Success</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        You order has been submitted successfully
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+        @* <button type="button" class="btn btn-primary">Understood</button> *@
+      </div>
+    </div>
+  </div>
+</div>
 <h3>Customer</h3>
   <main class="text-light">
     <div class="py-5 text-center">
@@ -9,7 +31,7 @@
       <div class="col-md-5 col-lg-4 order-md-last">
         <h4 class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-primary">Your cart</span>
-          <span class="badge bg-primary rounded-pill">3</span>
+          <span class="badge bg-primary rounded-pill">@customerOrder.Products.Count</span>
         </h4>
         <ul class="list-group mb-3">
           @foreach (var product in customerOrder.Products)
@@ -21,16 +43,17 @@
                 <small class="text-body-secondary"> Quantity : @product.Quantity</small>
               </div>
               <span class="text-body-secondary">K @product.TotalPrice</span>
+              <button class="btn btn-close bg-danger" @onclick="() => {customerOrder.Products.Remove(product); StateHasChanged(); }"></button>
             </li>
           }
 
 
           <li class="list-group-item d-flex justify-content-between">
-            <span>Total (USD)</span>
+            <span>Total (ZMW)</span>
             <strong>K @customerOrder.TotalAmount</strong>
           </li>
         </ul>
-          <button class="w-100 btn btn-primary btn-lg" @onclick="AddOrder">Make Order</button>
+          <button class="w-100 btn btn-primary btn-lg" @onclick="AddOrder"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Make Order</button>
 
       </div>
       <div class="col-md-7 col-lg-8">
@@ -47,7 +70,7 @@
 
           </div>
           <div>
-            <div class="text-white">
+            <div class="text-white p-3">
               <div class="row">
                 <select @bind="Id" class="form-select col" aria-label="Default select example">
                   <option disabled selected>Item</option>
@@ -68,7 +91,6 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -81,9 +103,7 @@
   int Unites = 0;
 
   Product selectedProduct { get => LocalDb.AvailableProducts.FirstOrDefault(x => x.Id == Id); set { } }
-  
-  
-  
+
   List<OrderItem> orders = new List<OrderItem>();
   List<Order> dborders = new List<Order>();
   OrderItem order = new OrderItem();
@@ -98,6 +118,7 @@
 
   void AddToProductList()
   {
+    if(Unites==0) return;
     customerOrder.Products.Add(
       new ()
       {
@@ -118,15 +139,5 @@
     customerOrder = new CustomerOrder();
     StateHasChanged();
 }
-
-
-
-protected override void OnInitialized()
-  {
-    
-    
-}
-
-
 
 }

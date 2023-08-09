@@ -1,9 +1,27 @@
 @page "/shipping"
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content  bg-dark text-light">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Success</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        @message
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+        @* <button type="button" class="btn btn-primary">Understood</button> *@
+      </div>
+    </div>
+  </div>
+</div>
+
 <h3>Shipping</h3>
 
 
 @* order number, customer name, items list, total amount, status, and shipper. *@
-                        <button class="btn btn-primary">Create Shipment</button>
+                        @* <button class="btn btn-primary">Create Shipment</button> *@
 
 <table class="table table-dark table-hover">
   <thead>
@@ -41,6 +59,12 @@
                             <td>@shipmentItem.UnitPrice</td>
                         </tr>
                     }
+                    <tr>
+                        
+                        <td rowspan="2">Total</td>
+                        <td rowspan=""></td>
+                        <td rowspan="">@item.TotalAmount</td>
+                    </tr>
                     </tbody>
                 </table>
             </td>
@@ -48,8 +72,8 @@
             <td>@item.Status</td>
             <td>
                 <div>
-                    <button class="btn btn-primary" @onclick="()=>Return(item)">Return</button>
-                        <button class="btn btn-primary" @onclick="()=>Ship(item)">Ship</button>
+                    <button class="btn btn-primary" @onclick="()=>Return(item)" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Return</button>
+                        <button class="btn btn-primary" @onclick="()=>Ship(item)" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Ship</button>
                 </div>
             </td>
         </tr>
@@ -58,14 +82,17 @@
   </tbody>
 </table>
 @code {
+    string message;
 
     private void Ship(Shipment shipment)
     {
+        message = "Items shipped successfully, Inventory updated ";
         LocalDb.CurrentShipments.Remove(shipment);
     }
 
     private void Return(Shipment shipment)
     {
+        message = "Items returned successfully to Inventory";
         LocalDb.CurrentShipments.Remove(shipment);
         shipment.ShipmentItemsList.ForEach(
             product =>

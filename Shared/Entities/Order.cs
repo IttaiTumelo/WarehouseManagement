@@ -1,7 +1,7 @@
 namespace WarehouseManagement.Shared;
 
 public class Order : BaseEntity
-{   public Direction Direction { get; set; } = Direction.Out;
+{   
     public string OrderNumber { get; set; } = String.Empty;
     public DateTime OrderDate { get; set; } = DateTime.Now;
     public string VendorName { get; set; } = String.Empty;
@@ -37,10 +37,4 @@ public enum Status
     Pending,
     Approved,
     Rejected
-}
-
-public enum Direction
-{
-    In,
-    Out
 }
