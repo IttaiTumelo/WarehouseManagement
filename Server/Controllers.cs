@@ -25,7 +25,8 @@ public class Controllers<T> : ControllerBase where T : BaseEntity, new()
         if (newEntity is null) throw new Exception($"Could not cast {entity.GetType().Name} to {typeof(T).Name}");
         await _context.Set<T>().AddAsync(newEntity);
         await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(Get), new { id = newEntity.Id }, newEntity);
+        // return CreatedAtAction(nameof(Get), new { id = newEntity.Id }, newEntity);
+        throw new NotImplementedException();
     }
 
     [HttpPut]

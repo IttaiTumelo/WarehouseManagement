@@ -116,7 +116,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var product in ourOrder.Products)
+    @foreach (var product in order.Products)
     {
       <tr>
         <td>@product.Name</td>
@@ -202,12 +202,8 @@
   
   void AddOrder()
   {
-    LocalDb.OurOrders.Add(ourOrder);
+    LocalDb.OurOrders.Add((ourOrder.Clone() as OurOrder)!);
     ourOrder = new ();
     StateHasChanged();
   }
-
-
-
-
 }

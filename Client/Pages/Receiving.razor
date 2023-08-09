@@ -1,4 +1,6 @@
 @page "/Receiving"
+@using System.Data
+@using System.Security.Cryptography.X509Certificates
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -17,7 +19,7 @@
                             <p>Order Id</p>
                         </div>
                         <div class="col-6">
-                            <p>@_order.Id</p>
+                            <p>@_order?.Id</p>
                         </div>
                     </div>
                     <div class="row">
@@ -25,15 +27,7 @@
                             <p>Order Name</p>
                         </div>
                         <div class="col-6">
-                            <p>@_order.Name</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <p>Vendor Name</p>
-                        </div>
-                        <div class="col-6">
-                            <p>@_order.VendorName</p>
+                            <p>@_order?.Name</p>
                         </div>
                     </div>
                     <div class="row">
@@ -41,15 +35,7 @@
                             <p>Total Amount</p>
                         </div>
                         <div class="col-6">
-                            <p>@_order.TotalAmount</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <p>Status</p>
-                        </div>
-                        <div class="col-6">
-                            <p>@_order.Status</p>
+                            <p>@_order?.TotalAmount</p>
                         </div>
                     </div>
                 </div>
@@ -64,13 +50,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach (var item in _order.OrderItemsList)
+
+                        @foreach (var item in _order?.Products)
                         {
                             <tr>
                                 <th scope="row">@item.Id</th>
                                 <td>@item.Name</td>
                                 <td>@item.Quantity</td>
-                                <td>@item.Price</td>
+                                <td>@item.TotalPrice</td>
                             </tr>
                         }
                         </tbody>
@@ -89,8 +76,8 @@
         </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Reject</button>
-        <button type="button" class="btn btn-primary">Receive</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @onclick="Reject">Reject</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @onclick="Receive">Receive</button>
       </div>
     </div>
   </div>
@@ -115,31 +102,50 @@
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Code</th>
-      <th scope="col">vendor name</th>
+      <th scope="col">Name</th>
       <th scope="col">items list</th>
       <th scope="col">total amount</th>
-      <th scope="col">status</th>
+      @* <th scope="col">status</th> *@
     </tr>
   </thead>
   <tbody>
-    @foreach (var item in items)
+    @foreach (var item in OurOrders)
     {
         <tr data-bs-toggle="modal" data-bs-target="#exampleModal">
             <th scope="row">@item.Id</th>
             <td>@item.Name</td>
-            <td>@item.VendorName</td>
+            @* <td>@item</td> *@
             <td>
-                @foreach(var i in item.OrderItemsList)
+                <table>
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Code</th>
+                        <th scope="col">vendor name</th>
+                        <th scope="col">items list</th>
+                        <th scope="col">total amount</th>
+                        <th scope="col">status</th>
+                    </tr>
+                    </thead>
+                </table>
+                <tbody>
+                @foreach (var i in item.Products)
                 {
-                    <p>@i.ToString()</p>
+                    <tr>
+                        <td>@i.Id</td>
+                        <td>@i.Name</td>
+                        <td>@i.Location</td>
+                        <td>@i.Quantity</td>
+                        <td>@i.UnitPrice</td>
+                    </tr>
                 }
+                </tbody>
+                
             </td>
             <td>@item.TotalAmount</td>
-            <td>@item.Status</td>
+            @* <td>@item.Status</td> *@
         </tr>
     }
-
   </tbody>
 </table>
 
@@ -147,38 +153,57 @@
     
     <div class="col-6">
 <h3>Expected</h3>
-        
 <table class="table table-dark table-hover">
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Code</th>
-      <th scope="col">vendor name</th>
+      <th scope="col">Name</th>
       <th scope="col">items list</th>
       <th scope="col">total amount</th>
-      <th scope="col">status</th>
+      @* <th scope="col">status</th> *@
     </tr>
   </thead>
   <tbody>
-    @foreach (var item in items)
+    @foreach (var item in LocalDb.OurOrders)
     {
         <tr data-bs-toggle="modal" data-bs-target="#exampleModal">
             <th scope="row">@item.Id</th>
             <td>@item.Name</td>
-            <td>@item.VendorName</td>
+            @* <td>@item</td> *@
             <td>
-                @foreach(var i in item.OrderItemsList)
+                <table>
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Code</th>
+                        <th scope="col">vendor name</th>
+                        <th scope="col">items list</th>
+                        <th scope="col">total amount</th>
+                        <th scope="col">status</th>
+                    </tr>
+                    </thead>
+                </table>
+                <tbody>
+                @foreach (var i in item.Products)
                 {
-                    <p>@i.ToString()</p>
+                    <tr>
+                        <td>@i.Id</td>
+                        <td>@i.Name</td>
+                        <td>@i.Location</td>
+                        <td>@i.Quantity</td>
+                        <td>@i.UnitPrice</td>
+                    </tr>
                 }
+                </tbody>
+                
             </td>
             <td>@item.TotalAmount</td>
-            <td>@item.Status</td>
+            @* <td>@item.Status</td> *@
         </tr>
     }
-
   </tbody>
 </table>
+
 
     </div>
 </div>
@@ -189,33 +214,53 @@
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Code</th>
-      <th scope="col">vendor name</th>
+      <th scope="col">Name</th>
       <th scope="col">items list</th>
       <th scope="col">total amount</th>
-      <th scope="col">status</th>
+      @* <th scope="col">status</th> *@
     </tr>
   </thead>
   <tbody>
-    @foreach (var item in items)
+    @foreach (var item in ReceivedOrders)
     {
-        <tr data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <tr>
             <th scope="row">@item.Id</th>
             <td>@item.Name</td>
-            <td>@item.VendorName</td>
+            @* <td>@item</td> *@
             <td>
-                @foreach(var i in item.OrderItemsList)
+                <table>
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Code</th>
+                        <th scope="col">vendor name</th>
+                        <th scope="col">items list</th>
+                        <th scope="col">total amount</th>
+                        <th scope="col">status</th>
+                    </tr>
+                    </thead>
+                </table>
+                <tbody>
+                @foreach (var i in item.Products)
                 {
-                    <p>@i.ToString()</p>
+                    <tr>
+                        <td>@i.Id</td>
+                        <td>@i.Name</td>
+                        <td>@i.Location</td>
+                        <td>@i.Quantity</td>
+                        <td>@i.UnitPrice</td>
+                    </tr>
                 }
+                </tbody>
+                
             </td>
             <td>@item.TotalAmount</td>
-            <td>@item.Status</td>
+            @* <td>@item.Status</td> *@
         </tr>
     }
-
   </tbody>
 </table>
+
 <h3>Stocking</h3>
         <table class="table table-dark table-hover">
             <thead>
@@ -227,7 +272,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach (var product in _products)
+            @foreach (var product in AvailableProducts)
             {
                 <tr>
                     <td>@product.Name</td>
@@ -240,70 +285,44 @@
             </tbody>
         </table>
 @code {
-    List<Order> items = new List<Order>()
-    {   
-        new Order()
-        {
-            Id = 1,
-            Name = "Order 1",
-            VendorName = "Vendor 1",
-            OrderItemsList = new List<OrderItem>()
-            {
-                new OrderItem()
-                {
-                    Id = 1,
-                    Name = "Item 1",
-                    Quantity = 1,
-                    Price = 100
-                },
-                new OrderItem()
-                {
-                    Id = 2,
-                    Name = "Item 2",
-                    Quantity = 2,
-                    Price = 200
-                }
-            },
-            Status = Status.Pending
-        },
-        new Order()
-        {
-            Id = 2,
-            Name = "Order 2",
-            VendorName = "Vendor 2",
-            OrderItemsList = new List<OrderItem>()
-            {
-                new OrderItem()
-                {
-                    Id = 3,
-                    Name = "Item 3",
-                    Quantity = 3,
-                    Price = 300
-                },
-                new OrderItem()
-                {
-                    Id = 4,
-                    Name = "Item 4",
-                    Quantity = 4,
-                    Price = 400
-                }
-            },
-            Status = Status.Pending
-        }
-    };
-    Order _order = new Order();
+    List<OurOrder> OurOrders = LocalDb.OurOrders;
+    List<OurOrder> ReceivedOrders = LocalDb.ReceivedOrders;
+    List<OurOrder> RejectedOrders = LocalDb.RejectedOrders;
+    List<Product> AvailableProducts = LocalDb.AvailableProducts;
+    
+    OurOrder _order = new();
     protected override void OnInitialized()
     {
-        _order = items.FirstOrDefault();
-    }
-    List<Product> _products = new List<Product>()
-    {
-        new Product(){Name="Product 1", Quantity=10, UnitPrice= 10, Barcode = "1234567890", Location = "A1"},
-        new Product(){Name="Product 2", Quantity=19, UnitPrice= 9, Barcode = "1874681422", Location = "A1"},
-        new Product(){Name="Product 3", Quantity=91, UnitPrice= 89, Barcode = "1846986384", Location = "A7"},
-        new Product(){Name="Product 4", Quantity=10, UnitPrice= 10, Barcode = "1234567890", Location = "A1"},
-        new Product(){Name="Product 5", Quantity=19, UnitPrice= 9, Barcode = "1874681422", Location = "A1"},
-        new Product(){Name="Product 6", Quantity=91, UnitPrice= 89, Barcode = "1846986384", Location = "A7"},
+        _order = LocalDb.OurOrders.FirstOrDefault()?? new OurOrder();
         
-    };
+        // LocalDb.OurOrders.ForEach(ourOrder=> OurOrders.Add((OurOrder)ourOrder.Clone()));
+    }
+    
+    void Receive()
+    {
+        Console.WriteLine("Receive");
+        LocalDb.ReceivedOrders.Add((OurOrder)_order.Clone());
+        LocalDb.OurOrders.Remove( LocalDb.OurOrders.First(x=> x.Id == _order.Id));
+        _order.Products.ForEach(
+            product =>
+            {
+                LocalDb.AvailableProducts.First(x=>x.Name.Equals(product.Name)).Quantity += product.Quantity;
+            });
+        OurOrders = LocalDb.OurOrders;
+        ReceivedOrders = LocalDb.ReceivedOrders;
+        RejectedOrders = LocalDb.RejectedOrders;
+        AvailableProducts = LocalDb.AvailableProducts;
+        StateHasChanged();
+    }
+
+    void Reject()
+    {
+        LocalDb.OurOrders.Remove(LocalDb.OurOrders.First(x => x.Id == _order.Id));
+        LocalDb.RejectedOrders.Add((OurOrder)_order.Clone());
+        OurOrders = LocalDb.OurOrders;
+        ReceivedOrders = LocalDb.ReceivedOrders;
+        RejectedOrders = LocalDb.RejectedOrders;
+        AvailableProducts = LocalDb.AvailableProducts;
+        StateHasChanged();
+    }
 }

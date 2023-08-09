@@ -8,4 +8,9 @@ public class Product : BaseEntity
     public double UnitPrice { get; set; } = 0;
     public double TotalPrice => Quantity * UnitPrice;
     public override string ToString() => $"Product Name: {Name}, Barcode: {Barcode}, Quantity: {Quantity}, Location: {Location}";
+    
+    public override object Clone()
+    {
+        return this.MemberwiseClone();
+    }
 }

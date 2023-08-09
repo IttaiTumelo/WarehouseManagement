@@ -89,14 +89,20 @@
     
     private void UpdateStock(CustomerOrder order)
     {
-        //remove products in order from available products in DB
+        LocalDb.CurrentShipments.Add(new()
+        {
+            Id = LocalDb.CurrentShipments.Count()+1,
+            CustomerName = order.Name,
+            ShipmentItemsList = new(order.Products.Count)
+        });
+        order.Products.ForEach((product) => { LocalDb.CurrentShipments.First(x=>x.Id ==LocalDb.CurrentShipments.Count()).ShipmentItemsList.Add((Product)product.Clone());});
+    //remove products in order from available products in DB
         foreach (var product in order.Products)
         {
             LocalDb.AvailableProducts.FirstOrDefault(x => x.Id == product.Id).Quantity -= product.Quantity;
             products = LocalDb.AvailableProducts;
             LocalDb.CurrentCustomerOrder.Remove(order);
             StateHasChanged();
-            
         }
         // LocalDb.AvailableProducts.RemoveRange(order);
     }

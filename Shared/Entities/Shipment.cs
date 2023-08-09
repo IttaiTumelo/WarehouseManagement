@@ -4,11 +4,16 @@ public class Shipment : BaseEntity
 {
     public string OrderNumber { get; set; } = String.Empty;
     public string CustomerName { get; set; } = String.Empty;
-    public List<ShipmentItem> ShipmentItemsList { get; set; } = new List<ShipmentItem>();
-    public double TotalAmount => ShipmentItemsList.Sum(x => x.Total);
+    public List<Product> ShipmentItemsList { get; set; } = new List<Product>();
+    public double TotalAmount => ShipmentItemsList.Sum(x => x.TotalPrice);
     public Status Status { get; set; } = Status.Pending;
     public Shipper Shipper { get; set; } = Shipper.None;
     public override string ToString() =>  $"Order Number: {OrderNumber}, Customer Name: {CustomerName}, Order Total: {TotalAmount}, Status: {Status}, Shipper: {Shipper}";
+    
+    public object Clone()
+    {
+        return this.MemberwiseClone();
+    }
 
 }
 
@@ -21,6 +26,11 @@ public class ShipmentItem : BaseEntity
     public double Total => Quantity * Price;
     
     public override string ToString() => $"Product Name: {Name}, Quantity: {Quantity}, Price: {Price}, Total: {Total}";
+    
+    public object Clone()
+    {
+        return this.MemberwiseClone();
+    }
 }
 
 public class Shipper : BaseEntity
@@ -33,4 +43,9 @@ public class Shipper : BaseEntity
     public static Shipper[] Shippers = new Shipper[] { None, FedEx, UPS, DHL, USPS };
     public Shipper(string name) => Name = name;
     public override string ToString() => Name;
+    
+    public object Clone()
+    {
+        return this.MemberwiseClone();
+    }
 }

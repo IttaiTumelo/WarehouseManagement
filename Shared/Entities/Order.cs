@@ -9,6 +9,11 @@ public class Order : BaseEntity
     public Status Status { get; set; } = Status.Pending;
     public double TotalAmount => OrderItemsList.Sum(x => x.Total);
     public override string ToString() =>  $"Order Number: {OrderNumber}, Order Date: {OrderDate}, Vendor Name: {VendorName}, Order Total: {TotalAmount}";
+    
+    public object Clone()
+    {
+        return this.MemberwiseClone();
+    }
 }
 
 public class OrderItem : BaseEntity
@@ -20,6 +25,11 @@ public class OrderItem : BaseEntity
     public double Total => Quantity * Price;
     
     public override string ToString() => $"Product Name: {Name}, Quantity: {Quantity}, Price: {Price}, Total: {Total}";
+    
+    public object Clone()
+    {
+        return this.MemberwiseClone();
+    }
 }
 
 public enum Status

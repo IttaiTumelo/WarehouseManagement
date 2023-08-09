@@ -18,7 +18,7 @@
   </tr>
   </thead>
   <tbody>
-    @foreach (var item in items)
+    @foreach (var item in LocalDb.CurrentShipments)
     {
         <tr>
             <td>@item.OrderNumber</td>
@@ -38,7 +38,7 @@
                         <tr>
                             <td>@shipmentItem.Name</td>
                             <td>@shipmentItem.Quantity</td>
-                            <td>@shipmentItem.Price</td>
+                            <td>@shipmentItem.UnitPrice</td>
                         </tr>
                     }
                     </tbody>
@@ -48,13 +48,8 @@
             <td>@item.Status</td>
             <td>
                 <div>
-                        <button class="btn btn-primary">Add Item</button>
-                    <button class="btn btn-primary">Pack and Seal</button>
-                    <br/>
-                        <button class="btn btn-primary">View Shipping Lable and Details</button>
-                    <br/>
-                        <button class="btn btn-primary">Ship</button>
-                        <button class="btn btn-primary">Ship</button>
+                    <button class="btn btn-primary" @onclick="()=>Return(item)">Return</button>
+                        <button class="btn btn-primary" @onclick="()=>Ship(item)">Ship</button>
                 </div>
             </td>
         </tr>
@@ -63,112 +58,19 @@
   </tbody>
 </table>
 @code {
-    List<Shipment> items = new List<Shipment>()
-    {
-        new Shipment()
-        {
-            Id = 1, 
-            Shipper = Shipper.DHL, 
-            Status = Status.Pending, 
-            OrderNumber = "Order 1", 
-            Name = "Order 1", 
-            CustomerName =  "Customer 1",
-            ShipmentItemsList = new()
-            {   
-                new ShipmentItem()
-                {
-                    Id = 1,
-                    Name = "Item 1",
-                    Quantity = 1,
-                    Price = 10
-                },
-                new ShipmentItem()
-                {
-                    Id = 2,
-                    Name = "Item 2",
-                    Quantity = 2,
-                    Price = 20
-                },
-            }
-        },
-        new Shipment()
-        {
-            Id = 2, 
-            Shipper = Shipper.DHL, 
-            Status = Status.Pending, 
-            OrderNumber = "Order 2", 
-            Name = "Order 2", 
-            CustomerName =  "Customer 2",
-            ShipmentItemsList = new()
-            {   
-                new ShipmentItem()
-                {
-                    Id = 1,
-                    Name = "Item 1",
-                    Quantity = 1,
-                    Price = 10
-                },
-                new ShipmentItem()
-                {
-                    Id = 2,
-                    Name = "Item 2",
-                    Quantity = 2,
-                    Price = 20
-                },
-            }
-        },
-        new Shipment()
-        {
-            Id = 3, 
-            Shipper = Shipper.DHL, 
-            Status = Status.Pending, 
-            OrderNumber = "Order 3", 
-            Name = "Order 3", 
-            CustomerName =  "Customer 3",
-            ShipmentItemsList = new()
-            {   
-                new ShipmentItem()
-                {
-                    Id = 1,
-                    Name = "Item 1",
-                    Quantity = 1,
-                    Price = 10
-                },
-                new ShipmentItem()
-                {
-                    Id = 2,
-                    Name = "Item 2",
-                    Quantity = 2,
-                    Price = 20
-                },
-            }
-        },
-        new Shipment()
-        {
-            Id = 4, 
-            Shipper = Shipper.DHL, 
-            Status = Status.Pending, 
-            OrderNumber = "Order 4", 
-            Name = "Order 4", 
-            CustomerName =  "Customer 4",
-            ShipmentItemsList = new()
-            {   
-                new ShipmentItem()
-                {
-                    Id = 1,
-                    Name = "Item 1",
-                    Quantity = 1,
-                    Price = 10
-                },
-                new ShipmentItem()
-                {
-                    Id = 2,
-                    Name = "Item 2",
-                    Quantity = 2,
-                    Price = 20
-                },
-            }
-        },
-    };
 
+    private void Ship(Shipment shipment)
+    {
+        LocalDb.CurrentShipments.Remove(shipment);
+    }
+
+    private void Return(Shipment shipment)
+    {
+        LocalDb.CurrentShipments.Remove(shipment);
+        shipment.ShipmentItemsList.ForEach(
+            product =>
+            {
+                LocalDb.AvailableProducts.First(x=>x.Name.Equals(product.Name)).Quantity += product.Quantity;
+            });
+    }
 }

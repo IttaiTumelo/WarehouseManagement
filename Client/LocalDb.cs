@@ -1,3 +1,5 @@
+using System.Security.Cryptography.X509Certificates;
+
 namespace WarehouseManagement.Client;
 
 public  class LocalDb
@@ -6,44 +8,10 @@ public  class LocalDb
     public static List<Order> Orders { get; set; }= new  List<Order>();
     public static List<OrderItem> OrderItems { get; set; }= new List<OrderItem>();
     public static List<CustomerOrder> CurrentCustomerOrder { get; set; } = new();
+
+    public static List<OurOrder> OurOrders { get; set; } = new();
     
-    public static List<OurOrder> OurOrders { get; set; } = new()
-    {
-        new OurOrder()
-        {
-            Products = new ()
-            {
-                new Product()
-                {
-                    Id = 1,
-                    Name = "Fridge",
-                    Barcode = "123456789",
-                    Quantity = 100,
-                    Location = "A1",
-                    UnitPrice = 1299
-                },
-                new Product()
-                {
-                    Id = 2,
-                    Name = "Washing Machine",
-                    Barcode = "123456790",
-                    Quantity = 100,
-                    Location = "A2",
-                    UnitPrice = 899
-                },
-        
-                new Product()
-                {
-                    Id = 3,
-                    Name = "Washing Machine",
-                    Barcode = "123456790",
-                    Quantity = 100,
-                    Location = "A2",
-                    UnitPrice = 899
-                }
-            }
-        }
-    };
+    public static List<Shipment> CurrentShipments = new List<Shipment>();
     
     public static List<Product> AvailableProducts { get; set; } = new List<Product>()
     {
@@ -114,5 +82,8 @@ public  class LocalDb
         },
     };
 
+    public static List<OurOrder> ReceivedOrders { get; set; } = new List<OurOrder>();
+    
+    public static List<OurOrder> RejectedOrders { get; set; } = new List<OurOrder>();
 
 }
